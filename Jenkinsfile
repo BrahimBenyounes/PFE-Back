@@ -12,15 +12,9 @@ pipeline {
             steps {
                 script {
                     if (!fileExists('.git')) {
-                        sh 'git init'
+                        checkout scm
                     }
                 }
-            }
-        }
-
-        stage('Checkout') {
-            steps {
-                checkout scm
             }
         }
 
