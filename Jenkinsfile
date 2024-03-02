@@ -22,6 +22,8 @@ pipeline {
             }
         }
 
+   
+
 
 
         stage('Build Docker Image') {
@@ -53,6 +55,6 @@ stage('Push Docker Image to Docker Hub') {
                 sh 'docker-compose up -d'
             }
         }
-  
+    
     }
 }
