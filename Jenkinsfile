@@ -1,8 +1,3 @@
-options {
-    buildDiscarder(logRotator(artifactNumToKeepStr: '1', numToKeepStr: '5'))
-    skipDefaultCheckout(true)
-}
-
 pipeline {
     agent any
 
@@ -13,6 +8,16 @@ pipeline {
     }
 
     stages {
+        stage('Initialization') {
+            steps {
+                script {
+                    if (!fileExists('.git')) {
+                        sh 'git init'
+                    }
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm
