@@ -1,3 +1,8 @@
+options {
+    buildDiscarder(logRotator(artifactNumToKeepStr: '1', numToKeepStr: '5'))
+    skipDefaultCheckout(true)
+}
+
 pipeline {
     agent any
 
@@ -8,6 +13,11 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
 
         stage('Test With JUnit And Mockito') {
             steps {
@@ -22,10 +32,6 @@ pipeline {
             }
         }
 
-   
-
-
-
         stage('Build Docker Image') {
             steps {
                 script {
@@ -34,15 +40,15 @@ pipeline {
             }
         }
 
-stage('Push Docker Image to Docker Hub') {
-    steps {
-        script {
-            sh "docker login -u brahimbenyouns@gmail.com -p Lifeisgoodbrahim@@"
-            sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
-            sh "docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    sh "docker login -u brahimbenyouns@gmail.com -p Lifeisgoodbrahim@@"
+                    sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+                    sh "docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+                }
+            }
         }
-    }
-}
 
         stage('Remove Docker Compose Containers') {
             steps {
@@ -55,6 +61,5 @@ stage('Push Docker Image to Docker Hub') {
                 sh 'docker-compose up -d'
             }
         }
-    
     }
 }
