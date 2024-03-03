@@ -10,12 +10,7 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
-                script {
-                    if (!fileExists('.git')) {
-                        dir('your/workspace/directory') {
-                            checkout scm
-                        }
-                    }
+                     checkout scm
                 }
             }
         }
