@@ -12,7 +12,9 @@ pipeline {
             steps {
                 script {
                     if (!fileExists('.git')) {
-                        checkout scm
+                        dir('your/workspace/directory') {
+                            checkout scm
+                        }
                     }
                 }
             }
